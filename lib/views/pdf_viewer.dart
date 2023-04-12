@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:ebook/globals/widgets/appbar.dart';
-import 'package:ebook/globals/widgets/loader.dart';
 import 'package:http/http.dart';
+import 'package:page_flip/page_flip.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:turn_page_transition/turn_page_transition.dart';
 
 class PDFViewer extends StatefulWidget {
   final PhotoBook photoBook;
@@ -29,6 +28,7 @@ class _PDFViewerState extends State<PDFViewer> {
   var defaultPage = 0;
 
   var pdfViewerController = PdfViewerController();
+  final GlobalKey<PageFlipWidgetState> _controller = GlobalKey();
 
   Future<File> _getFile(String filename) async {
     final dir = await getApplicationDocumentsDirectory();
@@ -95,28 +95,28 @@ class _PDFViewerState extends State<PDFViewer> {
   // final manager = StateManager();
   Timer? _timer;
   slideShow() {
-    // var counter = pdfViewerController.pageCount;
     Timer.periodic(const Duration(seconds: 2), (timer) {
       _timer = timer;
       print(timer.tick);
-      // print(counter);
-      pdfViewerController.nextPage();
-      // Navigator.of(context).push(
-      //   // Use TurnPageRoute instead of MaterialPageRoute.
-      //   TurnPageRoute(
-      //     overleafColor: Colors.grey,
-      //     turningPoint: 0.1,
-      //     transitionDuration: const Duration(seconds: 2),
-      //     builder: (context) =>
-      //         PDFViewer(photoBook: widget.photoBook, pin: widget.pin),
-      //   ),
-      // );
-      // counter--;
-      if (pdfViewerController.pageCount == pdfViewerController.pageNumber) {
+      print(_controller.currentState!.pageNumber);
+      _controller.currentState!.nextPage();
+      if (_controller.currentState!.pages!.length - 2 ==
+          _controller.currentState!.pageNumber) {
         print('Cancel timer');
         timer.cancel();
       }
     });
+    // ******************************
+    // var counter = pdfViewerController.pageCount;
+    // Timer.periodic(const Duration(seconds: 2), (timer) {
+    //   _timer = timer;
+    //   print(timer.tick);
+    //   pdfViewerController.nextPage();
+    //   if (pdfViewerController.pageCount == pdfViewerController.pageNumber) {
+    //     print('Cancel timer');
+    //     timer.cancel();
+    //   }
+    // });
   }
 
   stopSlideShow() {
@@ -226,55 +226,70 @@ class _PDFViewerState extends State<PDFViewer> {
               icon: const Icon(Icons.share))
         ],
       ),
-      body: FutureBuilder(
-          future: createFileOfPdfUrlApi,
-          builder: (context, AsyncSnapshot<File> snapshot) {
-            if (snapshot.hasData) {
-              // return PspdfkitWidget(
-              //   documentPath: snapshot.data!.path,
-              // );
-              return SfPdfViewer.file(
-                snapshot.data!,
-                controller: pdfViewerController,
-                scrollDirection: PdfScrollDirection.horizontal,
-                pageLayoutMode: PdfPageLayoutMode.single,
-                password: widget.pin,
-              );
-              //   return PDFView(
-              //     filePath: snapshot.data!.path,
-              //     enableSwipe: true,
-              //     swipeHorizontal: true,
-              //     autoSpacing: true,
-              //     pageFling: true,
-              //     defaultPage: defaultPage,
-              //     password: widget.pin,
-              //     // preventLinkNavigation: true,
-              //     // nightMode: true,
-              //     onRender: (page) {
-              //       setState(() {
-              //         pages = page;
-              //         isReady = true;
-              //       });
-              //     },
-              //     onError: (error) {
-              //       print(error.toString());
-              //     },
-              //     onPageError: (page, error) {
-              //       print('$page: ${error.toString()}');
-              //     },
-              //     onViewCreated: (PDFViewController pdfViewController) {
-              //       // _controller.complete(pdfViewController);
-              //     },
-              //     onPageChanged: (page, total) {
-              //       print('page change: $page/$total');
-              //     },
-              //   );
-            }
-            if (snapshot.hasError) {
-              return Center(child: Text(snapshot.error.toString()));
-            }
-            return const Loader();
-          }),
+      body: PageFlipWidget(
+        key: _controller,
+        // cutoff: 0.9,
+        backgroundColor: Colors.white,
+        showDragCutoff: false,
+        lastPage: const Center(child: Text('Thanks for watching!')),
+        children: widget.photoBook.images
+            .map((e) => Center(
+                    child: Image.network(
+                  e,
+                  fit: BoxFit.cover,
+                )))
+            .toList(),
+      ),
+      // *****************************************
+      // body: FutureBuilder(
+      //     future: createFileOfPdfUrlApi,
+      //     builder: (context, AsyncSnapshot<File> snapshot) {
+      //       if (snapshot.hasData) {
+      //         // return PspdfkitWidget(
+      //         //   documentPath: snapshot.data!.path,
+      //         // );
+      //         return SfPdfViewer.file(
+      //           snapshot.data!,
+      //           controller: pdfViewerController,
+      //           scrollDirection: PdfScrollDirection.horizontal,
+      //           pageLayoutMode: PdfPageLayoutMode.single,
+      //           password: widget.pin,
+      //         );
+      //         //   return PDFView(
+      //         //     filePath: snapshot.data!.path,
+      //         //     enableSwipe: true,
+      //         //     swipeHorizontal: true,
+      //         //     autoSpacing: true,
+      //         //     pageFling: true,
+      //         //     defaultPage: defaultPage,
+      //         //     password: widget.pin,
+      //         //     // preventLinkNavigation: true,
+      //         //     // nightMode: true,
+      //         //     onRender: (page) {
+      //         //       setState(() {
+      //         //         pages = page;
+      //         //         isReady = true;
+      //         //       });
+      //         //     },
+      //         //     onError: (error) {
+      //         //       print(error.toString());
+      //         //     },
+      //         //     onPageError: (page, error) {
+      //         //       print('$page: ${error.toString()}');
+      //         //     },
+      //         //     onViewCreated: (PDFViewController pdfViewController) {
+      //         //       // _controller.complete(pdfViewController);
+      //         //     },
+      //         //     onPageChanged: (page, total) {
+      //         //       print('page change: $page/$total');
+      //         //     },
+      //         //   );
+      //       }
+      //       if (snapshot.hasError) {
+      //         return Center(child: Text(snapshot.error.toString()));
+      //       }
+      //       return const Loader();
+      //     }),
     );
   }
 }

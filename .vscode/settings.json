@@ -2,5 +2,7 @@
     "github.codespaces.defaultExtensions": [
         "GitHub.codespaces",
         "GitHub.vscode-pull-request-github"
-    ]
+    ],
+    "github.gitAuthentication": false,
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

@@ -4,9 +4,6 @@ import 'package:ebook/models/photobook.dart';
 import 'package:ebook/views/pdf_viewer.dart';
 import 'package:flip_widget/flip_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:page_flip/page_flip.dart';
-import 'dart:math' as math;
-import 'package:turn_page_transition/turn_page_transition.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,35 +23,50 @@ class _HomePageState extends State<HomePage> {
       //     'https://5.imimg.com/data5/SELLER/Default/2020/9/JQ/FO/RS/748292/photo-pad-500x500.jpg',
       image:
           'https://www.happywedding.app/blog/wp-content/uploads/2019/11/Make-your-wedding-album-wonderful-with-these-innovative-ideas.jpg',
+      images: [
+        'https://www.happywedding.app/blog/wp-content/uploads/2019/11/Make-your-wedding-album-wonderful-with-these-innovative-ideas.jpg',
+        'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg'
+      ],
     ),
     PhotoBook(
-        id: 1,
-        title: 'Wedding Album 2',
-        url:
-            'https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2023/03/2023030640.pdf',
-        image:
-            'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg'
-        // image: 'https://fotoframe.in/wp-content/uploads/2020/09/3-570x335.png',
-        ),
+      id: 1,
+      title: 'Wedding Album 2',
+      url:
+          'https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2023/03/2023030640.pdf',
+      image:
+          'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg',
+      // image: 'https://fotoframe.in/wp-content/uploads/2020/09/3-570x335.png',
+      images: [
+        'https://www.happywedding.app/blog/wp-content/uploads/2019/11/Make-your-wedding-album-wonderful-with-these-innovative-ideas.jpg',
+        'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg'
+      ],
+    ),
     PhotoBook(
-        id: 2,
-        title: 'Wedding Album 3',
-        url: 'https://www.africau.edu/images/default/sample.pdf',
-        image:
-            'https://www.zookbinders.com/wp-content/uploads/2020/05/Wedding-Album-Design-2.jpg'
-
-        // image:
-        //     'https://www.weddingkathmandu.com/public/images/upload/product/pro-photo-books-albun-kathmandu.jpg',
-        ),
+      id: 2,
+      title: 'Wedding Album 3',
+      url: 'https://www.africau.edu/images/default/sample.pdf',
+      image:
+          'https://www.zookbinders.com/wp-content/uploads/2020/05/Wedding-Album-Design-2.jpg',
+      // image:
+      //     'https://www.weddingkathmandu.com/public/images/upload/product/pro-photo-books-albun-kathmandu.jpg',
+      images: [
+        'https://www.happywedding.app/blog/wp-content/uploads/2019/11/Make-your-wedding-album-wonderful-with-these-innovative-ideas.jpg',
+        'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg'
+      ],
+    ),
     PhotoBook(
-        id: 3,
-        title: 'RAJK1995',
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/sales-management-7f835.appspot.com/o/chats%2Fdocs%2FRAJK1995%20EAadhaar_xxxxxxxx0469_04122020202107_021396.pdf?alt=media&token=503e14e4-bb33-4807-95da-9eae247eb279',
-        image: 'https://www.milkbooks.com/media/10510/josephpaul-cover.jpg'
-        // image:
-        //     'https://www.weddingkathmandu.com/public/images/upload/product/pro-photo-books-albun-kathmandu.jpg',
-        ),
+      id: 3,
+      title: 'RAJK1995',
+      url:
+          'https://firebasestorage.googleapis.com/v0/b/sales-management-7f835.appspot.com/o/chats%2Fdocs%2FRAJK1995%20EAadhaar_xxxxxxxx0469_04122020202107_021396.pdf?alt=media&token=503e14e4-bb33-4807-95da-9eae247eb279',
+      image:
+          'https://www.milkbooks.com/media/10510/josephpaul-cover.jpg', // image:
+      //     'https://www.weddingkathmandu.com/public/images/upload/product/pro-photo-books-albun-kathmandu.jpg',
+      images: [
+        'https://www.happywedding.app/blog/wp-content/uploads/2019/11/Make-your-wedding-album-wonderful-with-these-innovative-ideas.jpg',
+        'https://alexandra.bridestory.com/image/upload/assets/1b730f52-8f8e-415e-b229-9af310eeb1ee-SJhIdFsb4.jpg'
+      ],
+    ),
   ];
 
   var pinController = TextEditingController();
@@ -132,21 +144,18 @@ class _HomePageState extends State<HomePage> {
         },
         child: const Icon(Icons.add),
       ),
-      // body: SizedBox(
-      //   // height: 260,
-      //   child: PageFlipWidget(
-      //     // key: _controller,
-      //     // backgroundColor: Colors.white,
-      //     showDragCutoff: false,
-      //     lastPage: const Center(child: Text('Last Page!')),
-      //     children: ebookList
-      //         .map((e) => Center(
-      //                 child: Image.network(
-      //               e.image,
-      //               fit: BoxFit.cover,
-      //             )))
-      //         .toList(),
-      //   ),
+      // body: PageFlipWidget(
+      //   // key: _controller,
+      //   // backgroundColor: Colors.white,
+      //   showDragCutoff: false,
+      //   lastPage: const Center(child: Text('Last Page!')),
+      //   children: ebookList
+      //       .map((e) => Center(
+      //               child: Image.network(
+      //             e.image,
+      //             fit: BoxFit.cover,
+      //           )))
+      //       .toList(),
       // ),
       // body: GestureDetector(
       //   onTap: () {

@@ -3,9 +3,12 @@ class PhotoBook {
   final String title;
   final String url;
   final String image;
-  PhotoBook(
-      {required this.id,
-      required this.title,
-      required this.url,
-      required this.image});
+  final List<String> images;
+  PhotoBook({
+    required this.id,
+    required this.title,
+    required this.url,
+    required this.image,
+    required this.images,
+  });
 }
